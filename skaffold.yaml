@@ -1,0 +1,28 @@
+apiVersion: skaffold/v2alpha3
+kind: Config
+deploy:
+  kubectl:
+    manifests:
+      - ./infra/k8s/*
+build:
+  local:
+    push: false
+  artifacts:
+    - image: abdelmounaimazz/elk-k8s
+      context: client
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: "**/*.js"
+            dest: .
+          - src: "**/*.css"
+            dest: .
+    - image: abdelmounaimazz/server-elk
+      context: server
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: "*.js"
+            dest: .

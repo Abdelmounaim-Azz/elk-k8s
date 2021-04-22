@@ -1,0 +1,20 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: ingress-service
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/use-regex: "true"
+spec:
+  rules:
+    - host: elk8s.com
+      http:
+        paths:
+          - path: /api/visits/?(.*)
+            backend:
+              serviceName: server-srv
+              servicePort: 8080
+          - path: /?(.*)
+            backend:
+              serviceName: client-srv
+              servicePort: 3000
